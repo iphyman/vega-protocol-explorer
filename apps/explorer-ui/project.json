@@ -1,0 +1,73 @@
+{
+  "root": "apps/explorer-ui",
+  "sourceRoot": "apps/explorer-ui/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/explorer-ui",
+        "index": "apps/explorer-ui/src/index.html",
+        "baseHref": "/",
+        "main": "apps/explorer-ui/src/main.tsx",
+        "polyfills": "apps/explorer-ui/src/polyfills.ts",
+        "tsConfig": "apps/explorer-ui/tsconfig.app.json",
+        "assets": [
+          "apps/explorer-ui/src/favicon.ico",
+          "apps/explorer-ui/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/explorer-ui/src/environments/environment.ts",
+              "with": "apps/explorer-ui/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "explorer-ui:build",
+        "hmr": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "explorer-ui:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/explorer-ui/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/explorer-ui"],
+      "options": {
+        "jestConfig": "apps/explorer-ui/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

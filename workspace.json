@@ -1,4 +1,9 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "explorer-api": "apps/explorer-api",
+    "explorer-ui": "apps/explorer-ui",
+    "explorer-ui-e2e": "apps/explorer-ui-e2e",
+    "sdk": "libs/sdk"
+  }
 }
