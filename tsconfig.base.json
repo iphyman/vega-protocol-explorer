@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@vega-scan/sdk": ["libs/sdk/src/index.ts"]
+      "@vega-scan/sdk": ["libs/sdk/src/index.ts"],
+      "@vega-scan/ui-components": ["libs/ui-components/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

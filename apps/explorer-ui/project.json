@@ -45,7 +45,7 @@
       "options": {
         "buildTarget": "explorer-ui:build",
         "hmr": true
-      },
+      }, 
       "configurations": {
         "production": {
           "buildTarget": "explorer-ui:build:production",

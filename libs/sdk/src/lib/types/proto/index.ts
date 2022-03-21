@@ -1,0 +1,26 @@
+export enum Commands {
+  OrderSubmission = 1001,
+  OrderCancellation = 1002,
+  OrderAmendment = 1003,
+  WithdrawSubmission = 1004,
+  ProposalSubmission = 1005,
+  VoteSubmission = 1006,
+  LiquidityProvisionSubmission = 1007,
+  DelegateSubmission = 1008,
+  UndelegateSubmission = 1009,
+  LiquidityProvisionCancellation = 1010,
+  LiquidityProvisionAmendment = 1011,
+  Transfer = 1012,
+  CancelTransfer = 1013,
+  AnnounceNode = 1014,
+  NodeVote = 2002,
+  NodeSignature = 2003,
+  ChainEvent = 2004,
+  KeyRotateSubmission = 2005,
+  StateVariableProposal = 2006,
+  ValidatorHeartbeat = 2007,
+  OracleDataSubmission = 3001,
+  RestoreSnapshotSubmission = 4001,
+}
+
+export type UnmarshalType = "InputData" | "Transaction" | keyof typeof Commands;
