@@ -54,6 +54,14 @@ export default function Block() {
                   <td>Height</td>
                   <td></td>
                 </tr>
+                <tr>
+                  <td>Timestamp</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Transactions</td>
+                  <td></td>
+                </tr>
               </tbody>
             </table>
           </TableContainer>
