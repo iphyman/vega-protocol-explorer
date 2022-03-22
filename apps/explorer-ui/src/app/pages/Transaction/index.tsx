@@ -41,32 +41,30 @@ const TableContainer = styled(FullWidth)`
   }
 `;
 
-export default function Block() {
-  const [block, setBlockData] = useState<GetBlockResponse | null>(null);
-  const { height } = useParams<{ height: string }>();
+export default function Transaction() {
+  const [tx, setBlockData] = useState<any | null>(null);
+  const { hash } = useParams<{ hash: string }>();
   const isMounted = useIsMounted();
-  const block_time = block
-    ? new Date(block.time).toUTCString()
-    : new Date().toUTCString();
+  const block_time = new Date().toUTCString();
 
-  const getBlock = async () => {
+  const getTx = async () => {
     const client = new VegaClient();
-    const block = await client.getBlock(parseInt(height as string));
-    setBlockData(block);
+    const txs = await client.getTransactionByHash(hash as string);
+    setBlockData(txs);
   };
 
   useEffect(() => {
     if (isMounted()) {
-      getBlock();
+      getTx();
     }
   }, [isMounted]);
 
   return (
     <PageWrapper>
-      <PageTitle>Block</PageTitle>
+      <PageTitle>Transaction</PageTitle>
       <Card>
         <CardHeader>
-          <Title>Block details</Title>
+          <Title>Overview</Title>
         </CardHeader>
         <CardBody>
           <TableContainer>
@@ -74,10 +72,17 @@ export default function Block() {
               <tbody>
                 <tr>
                   <td>
-                    <ToolTip content="Block height indicates the length of the blockchain" />
-                    Height
+                    <ToolTip content="Indicates the hash of the transaction" />
+                    Transaction Hash
                   </td>
-                  <td>{block?.height}</td>
+                  <td>{tx?.hash}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <ToolTip content="Block height indicates the length of the blockchain" />
+                    Block
+                  </td>
+                  <td>{tx?.height}</td>
                 </tr>
                 <tr>
                   <td>
@@ -88,31 +93,45 @@ export default function Block() {
                 </tr>
                 <tr>
                   <td>
-                    <ToolTip content="Indicates the number of transactions included on this block" />
-                    Transactions
+                    <ToolTip content="Indicates the gas used by the transaction" />
+                    Gas Used
                   </td>
-                  <td>{block?.transaction_count}</td>
+                  <td>{tx?.gas_used}</td>
                 </tr>
                 <tr>
                   <td>
-                    <ToolTip content="Indicates the hash of the current block head" />
-                    Hash
+                    <ToolTip content="Indicates the gas wanted by transaction" />
+                    Gas Wanted
                   </td>
-                  <td>{block?.block_hash}</td>
+                  <td>{tx?.gas_wanted}</td>
                 </tr>
                 <tr>
                   <td>
-                    <ToolTip content="Indicates the hash of the previous block" />
-                    Parent Hash
+                    <ToolTip content="Indicates the log" />
+                    Log
                   </td>
-                  <td>{block?.parent_block_hash}</td>
+                  <td>{tx?.log}</td>
                 </tr>
                 <tr>
                   <td>
-                    <ToolTip content="Indicates the validator that included this block to the blockchain" />
-                    Proposer
+                    <ToolTip content="Indicates the data" />
+                    Data
                   </td>
-                  <td>{block?.proposer_address}</td>
+                  <td>{tx?.data}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <ToolTip content="Indicates the transaction type" />
+                    Type
+                  </td>
+                  <td>{tx?.tx?.command_name}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <ToolTip content="Indicates the data" />
+                    Data
+                  </td>
+                  <td>{tx?.data}</td>
                 </tr>
               </tbody>
             </table>

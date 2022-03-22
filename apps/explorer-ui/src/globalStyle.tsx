@@ -47,14 +47,20 @@ table {
   }
 }
 
+.limited-width {
+  max-width: 8rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 
 .tippy-box .tippy-content {
   padding: 0rem;
 }
 
 .tippy-box[data-theme~="tooltip"] {
-  background-color: ${({ theme }) => theme.bg200};
-  color: ${({ theme }) => theme.text200};
+  background-color: #ED108C;
+  color: ${({ theme }) => theme.white};
   padding: 0.6rem;
   border-radius: 0.5rem;
   .tippy-arrow:before {

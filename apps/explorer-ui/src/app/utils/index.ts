@@ -1,3 +1,4 @@
+import { VegaClient } from "@vega-scan/sdk";
 import { validators } from "../constants";
 
 export const formatUSD = (value = 0) => {
@@ -61,4 +62,32 @@ export const getValidatorInfo = (proposer: string) => {
   return validators.filter((validator) => {
     return validator.address === proposer;
   })[0];
+};
+
+export const getBlockchain = async () => {
+  const client = new VegaClient("TESTNET");
+
+  const { block_metas, last_height } = await client.getBlockchain();
+
+  const blocks: any[] = [];
+
+  block_metas.forEach((block: any) => {
+    blocks.push({
+      height: parseInt(block.header.height),
+      time: new Date(block.header.time),
+      proposer_address: block.header.proposer_address,
+      proposer_name:
+        getValidatorInfo(block.header.proposer_address).name || null,
+      block_size: parseInt(block.block_size),
+      transaction_count: parseInt(block.num_txs),
+    });
+  });
+
+  return { block_metas: blocks, last_height };
+};
+export const getBlock = async (height: string) => {
+  const client = new VegaClient("TESTNET");
+  const block = await client.getBlock(parseInt(height));
+
+  return block;
 };

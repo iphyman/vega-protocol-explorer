@@ -6,8 +6,7 @@ import {
   useState,
   ReactNode,
 } from "react";
-import { VegaClient } from "@vega-scan/sdk";
-import { getValidatorInfo } from "../../utils";
+import { getBlockchain, getBlock } from "../../utils";
 
 interface Stats {
   price: string;
@@ -34,6 +33,7 @@ interface Blocks {
 const ApplicationContext = createContext<{
   stats: Stats;
   blocks: Blocks[] | null;
+  txs: any[] | null;
 } | null>(null);
 
 const STATS_INITIAL_STATE = {
@@ -51,6 +51,7 @@ const STATS_INITIAL_STATE = {
 
 export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
   const [blocks, setBlock] = useState<Blocks[] | null>(null);
+  const [txs, setTxs] = useState<any[] | null>(null);
 
   const [stats, updateStats] = useReducer(
     (stats: Stats, updates: Partial<Stats>) => ({
@@ -60,43 +61,21 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
     STATS_INITIAL_STATE
   );
 
-  const client = new VegaClient("TESTNET");
-
-  const getBlockMetas = async () => {
-    const { block_metas, last_height } = await client.getBlockchain();
-
-    const blocks: any[] = [];
-
-    block_metas.forEach((block: any) => {
-      blocks.push({
-        height: parseInt(block.header.height),
-        time: new Date(block.header.time),
-        proposer_address: block.header.proposer_address,
-        proposer_name:
-          getValidatorInfo(block.header.proposer_address).name || null,
-        block_size: parseInt(block.block_size),
-        transaction_count: parseInt(block.num_txs),
-      });
-    });
-
-    return { block_metas: blocks, last_height };
-  };
-
   const getLatestBlocks = async () => {
-    const { block_metas, last_height } = await getBlockMetas();
+    const { block_metas, last_height } = await getBlockchain();
 
     updateStats({ latest_block_count: last_height });
     setBlock([...block_metas, blocks]);
+
+    const { transactions } = await getBlock("513552");
+    setTxs([...transactions]);
   };
 
   useEffect(() => {
     getLatestBlocks();
-    console.log(blocks);
 
     const interval = setInterval(() => {
       getLatestBlocks();
-      console.log(blocks);
-      console.log("Am called every 10 seconds");
     }, 60000);
 
     return () => clearInterval(interval);
@@ -105,7 +84,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <ApplicationContext.Provider value={{ blocks, stats }}>
+    <ApplicationContext.Provider value={{ blocks, stats, txs }}>
       {children}
     </ApplicationContext.Provider>
   );
@@ -116,11 +95,11 @@ export const useAppStates = () => {
 
   if (!context) throw new Error("Missing Application context");
 
-  const { blocks: blks, stats } = context;
+  const { blocks: blks, stats, txs } = context;
 
   const blocks = blks?.filter((el) => {
     return el != null;
   });
 
-  return { blocks, stats };
+  return { blocks, stats, txs };
 };

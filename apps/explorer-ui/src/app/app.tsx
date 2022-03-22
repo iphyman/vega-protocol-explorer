@@ -10,6 +10,7 @@ const Blocks = lazy(() => import("./pages/Blocks"));
 const Block = lazy(() => import("./pages/Block"));
 const Parties = lazy(() => import("./pages/Parties"));
 const Transactions = lazy(() => import("./pages/Transactions"));
+const Transaction = lazy(() => import("./pages/Transaction"));
 
 const AppContainer = styled.div`
   width: 100%;
@@ -35,7 +36,8 @@ export default function App() {
             <Route path="/block/:height" element={<Block />} />
             <Route path="/parties" element={<Parties />} />
             <Route path="/parties/:party" element={<Parties />} />
-            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/txs" element={<Transactions />} />
+            <Route path="/tx/:hash" element={<Transaction />} />
           </Routes>
         </Suspense>
       </PageContainer>

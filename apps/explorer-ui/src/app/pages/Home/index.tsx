@@ -11,6 +11,7 @@ import {
   Button,
   Card,
   LatestBlockRow,
+  LatestTxRow,
   Loader,
 } from "@vega-scan/ui-components";
 import { darken } from "polished";
@@ -107,7 +108,7 @@ const Title = styled.h3`
 `;
 
 export default function Home() {
-  const { blocks } = useAppStates();
+  const { blocks, txs } = useAppStates();
 
   return (
     <HomeWrap>
@@ -163,7 +164,15 @@ export default function Home() {
                 <CardHeader>
                   <Title>Latest Transactions</Title>
                 </CardHeader>
-                <CardBody></CardBody>
+                <CardBody>
+                  {!txs ? (
+                    <Loader />
+                  ) : (
+                    txs.map((tx, index) => {
+                      return <LatestTxRow key={index} block={tx} />;
+                    })
+                  )}
+                </CardBody>
                 <CardFooter to="/txs">View all transactions</CardFooter>
               </Card>
             </Column>

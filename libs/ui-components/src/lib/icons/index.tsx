@@ -4,7 +4,7 @@ import {
   FaTelegramPlane,
   FaExternalLinkAlt,
 } from "react-icons/fa";
-import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
+import { MdOutlineLightMode, MdOutlineDarkMode, MdHelp } from "react-icons/md";
 
 export {
   FaTwitter as TwitterIcon,
@@ -13,4 +13,5 @@ export {
   FaExternalLinkAlt as LinkIcon,
   MdOutlineLightMode as LightModeIcon,
   MdOutlineDarkMode as DarkModeIcon,
+  MdHelp as HelpIcon,
 };

@@ -53,6 +53,10 @@ const Badge = styled(BlockIcon)`
   text-transform: uppercase;
 `;
 
+const RowColumn = styled(FlexColumn)`
+  overflow: hidden;
+`;
+
 interface Block {
   height: number;
   time: Date;
@@ -62,8 +66,45 @@ interface Block {
   transaction_count: number;
 }
 
-export const LatestTxRow = () => {
-  return;
+export const LatestTxRow = (block: any) => {
+  const block_time = new Date().getSeconds() + 1 - new Date().getSeconds();
+
+  return (
+    <ItemRowWrapper>
+      <Row AlignItems="center" JustifyContent="space-between">
+        <Column columnAtLeastMobileL={5} column={5}>
+          <FlexBetween>
+            <BlockIcon rounded>Tx</BlockIcon>
+            <RowColumn>
+              <StyledLink to={`/tx/${block.block.hash}`}>
+                {block.block.hash}
+              </StyledLink>
+              <BlockTime>{Math.abs(block_time)} secs ago</BlockTime>
+            </RowColumn>
+          </FlexBetween>
+        </Column>
+        <Column columnAtLeastMobileL={7} column={7}>
+          <FlexBetween>
+            <FlexColumn>
+              <FlexStart>
+                <Label>Type:</Label>
+                <StyledLink to={`/tx/${block.block.hash}`}>
+                  {block.block.command_name}
+                </StyledLink>
+              </FlexStart>
+              <FlexStart>
+                {/* <StyledLink to={`/txns?block=${block.block.height}`}>
+                  {block.transaction_count} Txns
+                </StyledLink> */}
+                {/* <BlockTime pl="0.2rem">in 1 secs</BlockTime> */}
+              </FlexStart>
+            </FlexColumn>
+            <Badge>0 VEGA</Badge>
+          </FlexBetween>
+        </Column>
+      </Row>
+    </ItemRowWrapper>
+  );
 };
 
 export const LatestBlockRow = (block: Block) => {
@@ -73,7 +114,7 @@ export const LatestBlockRow = (block: Block) => {
   return (
     <ItemRowWrapper>
       <Row AlignItems="center" JustifyContent="space-between">
-        <Column columnAtLeastMobileL={4} column={4}>
+        <Column columnAtLeastMobileL={5} column={5}>
           <FlexBetween>
             <BlockIcon>Bk</BlockIcon>
             <FlexColumn>
@@ -84,7 +125,7 @@ export const LatestBlockRow = (block: Block) => {
             </FlexColumn>
           </FlexBetween>
         </Column>
-        <Column columnAtLeastMobileL={8} column={8}>
+        <Column columnAtLeastMobileL={7} column={7}>
           <FlexBetween>
             <FlexColumn>
               <FlexStart>
