@@ -7,7 +7,7 @@ import {
   PageTitle,
   ToolTip,
 } from "@vega-scan/ui-components";
-import { VegaClient, GetBlockResponse } from "@vega-scan/sdk";
+import { VegaClient } from "@vega-scan/sdk";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useIsMounted } from "../../hooks/useIsMounted";
@@ -42,7 +42,7 @@ const TableContainer = styled(FullWidth)`
 `;
 
 export default function Transaction() {
-  const [tx, setBlockData] = useState<any | null>(null);
+  const [tx, setBlockData] = useState<any>({});
   const { hash } = useParams<{ hash: string }>();
   const isMounted = useIsMounted();
   const block_time = new Date().toUTCString();
@@ -133,6 +133,19 @@ export default function Transaction() {
                   </td>
                   <td>{tx?.data}</td>
                 </tr>
+                {tx &&
+                  tx.tx &&
+                  Object.keys(tx.tx.data).map((key, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <ToolTip content={`Indicates the ${key}`} />
+                          {key}
+                        </td>
+                        <td>{tx.tx.data[key]}</td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </TableContainer>
