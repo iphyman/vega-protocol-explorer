@@ -15,7 +15,8 @@ import {
   Loader,
 } from "@vega-scan/ui-components";
 import { darken } from "polished";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Dashboard } from "../../components/Dashboard";
 // import Ad1 from "../../../assets/images/ad1.jpg";
 import VegaBg from "../../../assets/images/blocks-bg.png";
@@ -108,7 +109,22 @@ const Title = styled.h3`
 `;
 
 export default function Home() {
+  const [input, setInput] = useState<string>("");
   const { blocks, txs } = useAppStates();
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const isHash = new RegExp(/^0x([A-Fa-f0-9]{64})$/);
+    const isNumber = new RegExp(/^\d+$/);
+
+    if (isHash.test(input)) {
+      return navigate(`/tx/${input}`);
+    }
+
+    if (isNumber.test(input)) {
+      return navigate(`/block/${input}`);
+    }
+  };
 
   return (
     <HomeWrap>
@@ -118,8 +134,12 @@ export default function Home() {
             <Column columnAtLeastTablet={12} columnAtLeastTabletL={7}>
               <HeroTitle>The VegaProtocol Blockchain Explorer</HeroTitle>
               <SearchWrapper>
-                <SearchInput placeholder="Search Party/Txn/Block..." />
-                <SearchButton>
+                <SearchInput
+                  placeholder="Search Party/Txn/Block..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                <SearchButton onClick={handleSearch}>
                   <MdSearch size={32} />
                 </SearchButton>
               </SearchWrapper>

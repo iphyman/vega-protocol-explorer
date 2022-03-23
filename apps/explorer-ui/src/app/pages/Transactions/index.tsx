@@ -10,8 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import styled from "styled-components/macro";
 import { useParams } from "react-router-dom";
-import { useAppStates } from "../../contexts/application";
-import { formatNumber, getBlock } from "../../utils";
+import { getBlock } from "../../utils";
 import { useIsMounted } from "../../hooks/useIsMounted";
 
 const PageWrapper = styled(Container)`
@@ -39,14 +38,14 @@ const TableContainer = styled(FullWidth)`
 `;
 
 export default function Transactions() {
-  const [txs, setTxs] = useState<any[] | null>(null);
+  const [txs, setTxs] = useState<any | null>(null);
   const isMounted = useIsMounted();
   const { blockheight } = useParams<{ blockheight: string }>();
 
   const getTxsAtHeight = async () => {
     if (isMounted()) {
-      const { transactions } = await getBlock(blockheight || "513984");
-      setTxs([...transactions]);
+      const data = await getBlock(blockheight || "513984");
+      setTxs(data);
     }
   };
 
@@ -62,7 +61,8 @@ export default function Transactions() {
       <Card>
         <CardHeader>
           <Title>
-            Showing the last {txs ? formatNumber(txs.length) : 0} transactions
+            Showing {txs && txs.transactions ? txs.transactions.length : 0}{" "}
+            transactions from block height #{blockheight}
           </Title>
         </CardHeader>
         <CardBody>
@@ -82,9 +82,9 @@ export default function Transactions() {
                     <td colSpan={4}>No transactions found</td>
                   </tr>
                 ) : (
-                  txs.map((tx, index) => {
+                  txs.transactions.map((tx: any, index: number) => {
                     const block_time =
-                      new Date().getSeconds() + 1 - new Date().getSeconds();
+                      new Date().getSeconds() - new Date(txs.time).getSeconds();
 
                     return (
                       <tr key={index}>
@@ -94,7 +94,9 @@ export default function Transactions() {
                           </StyledLink>
                         </td>
                         <td>
-                          <StyledLink to={`/block/${tx.hash}`}>{}</StyledLink>
+                          <StyledLink to={`/block/${tx.hash}`}>
+                            {blockheight}
+                          </StyledLink>
                         </td>
                         <td>{Math.abs(block_time)} secs ago</td>
                         <td>

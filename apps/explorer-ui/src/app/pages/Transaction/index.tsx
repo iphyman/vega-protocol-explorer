@@ -141,13 +141,19 @@ export default function Transaction() {
                 {tx &&
                   tx.tx &&
                   Object.keys(tx.tx.data).map((key, index) => {
+                    let value = tx.tx.data[key];
+
+                    if (typeof tx.tx.data[key] === "object") {
+                      value = JSON.stringify(value);
+                    }
+
                     return (
                       <tr key={index}>
                         <td>
                           <ToolTip content={`Indicates the ${key}`} />
                           {key}
                         </td>
-                        <td>{tx.tx.data[key]}</td>
+                        <td>{value}</td>
                       </tr>
                     );
                   })}

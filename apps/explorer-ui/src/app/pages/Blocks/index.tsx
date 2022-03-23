@@ -80,7 +80,7 @@ export default function Blocks() {
                         </td>
                         <td>{Math.abs(block_time)} secs ago</td>
                         <td>
-                          <StyledLink to={`/txs?block=${block.height}`}>
+                          <StyledLink to={`/trx/${block.height}`}>
                             {block.transaction_count}
                           </StyledLink>
                         </td>

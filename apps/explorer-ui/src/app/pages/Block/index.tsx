@@ -6,6 +6,7 @@ import {
   FlexBetween,
   PageTitle,
   ToolTip,
+  StyledLink,
 } from "@vega-scan/ui-components";
 import { VegaClient, GetBlockResponse } from "@vega-scan/sdk";
 import { useParams } from "react-router-dom";
@@ -91,7 +92,11 @@ export default function Block() {
                     <ToolTip content="Indicates the number of transactions included on this block" />
                     Transactions
                   </td>
-                  <td>{block?.transaction_count}</td>
+                  <td>
+                    <StyledLink to={`/trx/${block?.height}`}>
+                      {block?.transaction_count}
+                    </StyledLink>
+                  </td>
                 </tr>
                 <tr>
                   <td>
