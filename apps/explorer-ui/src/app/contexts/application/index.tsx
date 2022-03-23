@@ -7,6 +7,7 @@ import {
   ReactNode,
 } from "react";
 import { getBlockchain, getBlock } from "../../utils";
+import { useIsMounted } from "../../hooks/useIsMounted";
 
 interface Stats {
   price: string;
@@ -52,6 +53,7 @@ const STATS_INITIAL_STATE = {
 export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
   const [blocks, setBlock] = useState<Blocks[] | null>(null);
   const [txs, setTxs] = useState<any[] | null>(null);
+  const isMounted = useIsMounted();
 
   const [stats, updateStats] = useReducer(
     (stats: Stats, updates: Partial<Stats>) => ({
@@ -62,13 +64,15 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const getLatestBlocks = async () => {
-    const { block_metas, last_height } = await getBlockchain();
+    if (isMounted()) {
+      const { block_metas, last_height } = await getBlockchain();
 
-    updateStats({ latest_block_count: last_height });
-    setBlock([...block_metas, blocks]);
+      updateStats({ latest_block_count: last_height });
+      setBlock([...block_metas, blocks]);
 
-    const { transactions } = await getBlock("513552");
-    setTxs([...transactions]);
+      const { transactions } = await getBlock(last_height);
+      setTxs([...transactions]);
+    }
   };
 
   useEffect(() => {
@@ -81,7 +85,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
     return () => clearInterval(interval);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMounted]);
 
   return (
     <ApplicationContext.Provider value={{ blocks, stats, txs }}>
