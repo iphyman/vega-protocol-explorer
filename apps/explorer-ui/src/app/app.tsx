@@ -32,12 +32,13 @@ export default function App() {
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/trx/:blockheight" element={<Transactions />} />
             <Route path="/blocks" element={<Blocks />} />
             <Route path="/block/:height" element={<Block />} />
             <Route path="/parties" element={<Parties />} />
             <Route path="/parties/:party" element={<Parties />} />
-            <Route path="/txs" element={<Transactions />} />
             <Route path="/tx/:hash" element={<Transaction />} />
+            <Route path="/txs" element={<Transactions />} />
           </Routes>
         </Suspense>
       </PageContainer>

@@ -7,9 +7,12 @@ import {
   StyledLink,
   Loader,
 } from "@vega-scan/ui-components";
+import { useEffect, useState } from "react";
 import styled from "styled-components/macro";
+import { useParams } from "react-router-dom";
 import { useAppStates } from "../../contexts/application";
-import { formatNumber } from "../../utils";
+import { formatNumber, getBlock } from "../../utils";
+import { useIsMounted } from "../../hooks/useIsMounted";
 
 const PageWrapper = styled(Container)`
   padding-top: 2rem;
@@ -36,7 +39,22 @@ const TableContainer = styled(FullWidth)`
 `;
 
 export default function Transactions() {
-  const { txs, stats } = useAppStates();
+  const [txs, setTxs] = useState<any[] | null>(null);
+  const isMounted = useIsMounted();
+  const { blockheight } = useParams<{ blockheight: string }>();
+
+  const getTxsAtHeight = async () => {
+    if (isMounted()) {
+      const { transactions } = await getBlock(blockheight || "513984");
+      setTxs([...transactions]);
+    }
+  };
+
+  useEffect(() => {
+    getTxsAtHeight();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   return (
     <PageWrapper>
@@ -76,9 +94,7 @@ export default function Transactions() {
                           </StyledLink>
                         </td>
                         <td>
-                          <StyledLink to={`/block/${stats.latest_block_count}`}>
-                            {stats.latest_block_count}
-                          </StyledLink>
+                          <StyledLink to={`/block/${tx.hash}`}>{}</StyledLink>
                         </td>
                         <td>{Math.abs(block_time)} secs ago</td>
                         <td>

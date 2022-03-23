@@ -135,7 +135,7 @@ export const LatestBlockRow = (block: Block) => {
                 </StyledLink>
               </FlexStart>
               <FlexStart>
-                <StyledLink to={`/txns?block=${block.height}`}>
+                <StyledLink to={`/trx/${block.height.toString()}`}>
                   {block.transaction_count} Txns
                 </StyledLink>
                 <BlockTime pl="0.2rem">in 1 secs</BlockTime>
