@@ -1,7 +1,7 @@
 import { Commands } from "../types/proto";
 import { unMarshalTx } from "../proto/proto";
 import { Buffer } from "buffer";
-import * as hexEncoding from "crypto-js/enc-hex";
+import hexEncoding from "crypto-js/enc-hex";
 import SHA256 from "crypto-js/sha256";
 
 export const unpackSignedTx = (rawTx: string) => {
