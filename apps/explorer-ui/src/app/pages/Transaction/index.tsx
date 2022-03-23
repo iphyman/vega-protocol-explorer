@@ -6,6 +6,7 @@ import {
   FlexBetween,
   PageTitle,
   ToolTip,
+  StyledLink,
 } from "@vega-scan/ui-components";
 import { VegaClient } from "@vega-scan/sdk";
 import { useParams } from "react-router-dom";
@@ -82,7 +83,11 @@ export default function Transaction() {
                     <ToolTip content="Block height indicates the length of the blockchain" />
                     Block
                   </td>
-                  <td>{tx?.height}</td>
+                  <td>
+                    <StyledLink to={`/block/${tx?.height}`}>
+                      {tx?.height}
+                    </StyledLink>
+                  </td>
                 </tr>
                 <tr>
                   <td>
